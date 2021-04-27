@@ -1,7 +1,9 @@
 
-import {reqCategory,reqAddress,reqShops,reqLoginPsw} from "@/api/index.js";
+import {reqCategory,reqAddress,reqShops,reqAutoLogin} from "@/api/index.js";
 
-import {RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_ADDRESS,RECEIVE_TOKEN,RECEIVE_USER} from "./mutations-types";
+import {RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_ADDRESS,RECEIVE_TOKEN,RECEIVE_USER,REMOVE_USER_INFO} from "./mutations-types";
+
+       
 
 export default {
  
@@ -44,14 +46,29 @@ export default {
   }
 
 },
+/* async gotoLogin({commit},{userInfo,type}){
 
-async gotoLogin({commit},userInfo){
+     let result
 
-  let result = await reqLoginPsw(userInfo)
+  
+     if(type){
+
+      result = await reqLoginPsw(userInfo)
+
+     }else{
+
+      result = await reqLoginSms(userInfo)
+        
+     }
+
+     console.log(result);
+     
 
   if(result.code === 0){
       
      let token = result.data.token
+
+     localStorage.setItem('token_key',token);
 
       commit(RECEIVE_TOKEN,token)
 
@@ -60,20 +77,52 @@ async gotoLogin({commit},userInfo){
      let users = result.data
 
      commit(RECEIVE_USER,users)
+
+     router.replace('/profile')
      
   }
 
+} */
+saveUsers({commit},userInfo){
 
- }
+  let token = userInfo.token
 
- 
+  localStorage.setItem('token_key',token);
+
+   commit(RECEIVE_TOKEN,token)
+
+  delete userInfo['token']
+
+  commit(RECEIVE_USER,userInfo)
+
+}, 
+
+async reqAutoLogin({state,commit}){
+
+  if(state.token && !state.user._id){
+
+  let result = await  reqAutoLogin()
+
+   if(result.code === 0){
+
+    commit(RECEIVE_USER,result.data)
+    
+  }  
+    
+  }
+},
+
+removeUser({commit}){
 
 
-
-
-
-
-
-
+  commit(REMOVE_USER_INFO)
 
 }
+}
+
+
+
+
+
+
+

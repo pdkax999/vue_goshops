@@ -13,9 +13,8 @@ import FooterGuide from "@components/FooterGuide";
       FooterGuide
     },
     mounted(){
-
-    /*   this.$store.dispatch('getAddress'); */
-      this.$store.dispatch('getShops');
+      
+      this.$store.dispatch('reqAutoLogin');
 
     }
   }

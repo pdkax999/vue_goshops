@@ -1,4 +1,4 @@
-import {RECEIVE_CATEGORY,RECEIVE_ADDRESS,RECEIVE_SHOPS,RECEIVE_TOKEN, RECEIVE_USER} from "./mutations-types";
+import {RECEIVE_CATEGORY,RECEIVE_ADDRESS,RECEIVE_SHOPS,RECEIVE_TOKEN, RECEIVE_USER,REMOVE_USER_INFO} from "./mutations-types";
 
 export default {
 
@@ -27,6 +27,14 @@ export default {
     state.user = user
 
   },
+  [REMOVE_USER_INFO](state){
+
+    state.user={}
+
+    state.token={}
+
+    localStorage.removeItem('token_key');
 
 
+  }
 }

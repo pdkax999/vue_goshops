@@ -14,7 +14,8 @@
               <section class="login_message">
                 <input type="tel" maxlength="11" placeholder="手机号" name='phone' v-validate='{required:true,mobile:true}' v-model="phone">
                  <span style="color: red;" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
-                <button :disabled="count>0 || phone.length<11" class="get_verification" :class="{right_phone_number:phone.length==11}" @click.prevent="getCode">获取验证码{{count>0 ? count+'s' : ''}}</button>
+                <button :disabled="count>0 || !isPhone" class="get_verification" :class="{right_phone_number: isPhone}" @click.prevent="getCode">
+                  {{count>0 ?  `验证码已发送${count}s` : '获取验证码'}}</button>
               </section>
               <section class="login_verification">
                 <input type="tel" maxlength="8" placeholder="验证码" v-validate='"required"' name='note' v-model="code">
@@ -58,7 +59,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {reqSendCode} from "@/api/index";
+import { Toast, MessageBox} from 'mint-ui';
+
 
   export default {
     data(){
@@ -74,7 +76,16 @@ import {reqSendCode} from "@/api/index";
         code:''
       }
     },
+    computed:{
+      isPhone(){   //是否禁用验证button
+
+
+        return  /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.phone);
+      }
+
+    },
     methods:{
+
       updateCaptcha(){
 
          if(this.timer){
@@ -87,44 +98,69 @@ import {reqSendCode} from "@/api/index";
 
           this.$refs.img.src='/api/captcha/?'+'name='+Date.now()
 
-      }, 100);
+      }, 300);
         
       },
      async toLogin(){
 
       const {isPasLog} = this
 
-       let name = !isPasLog ? ['password','email','code'] : ['phone','note']
+       let names = !isPasLog ? ['password','email','code'] : ['phone','note']
 
-       const success = await this.$validator.validateAll(name)
+       const success = await this.$validator.validateAll(names)
            
        if(success){
 
-         let {pwd,name,captcha} = this
+         let {pwd,name,captcha,phone,code} = this
+          
+         let reslut = null 
+
+         if(!isPasLog){
+
+          reslut = await this.API.reqLoginPsw({pwd,name,captcha})
+          
+         }else{
+
+           reslut = await this.API.reqLoginSms({phone,code})
+
+         }
+
+         if(reslut.code === 0){
+
+            this.$store.dispatch('saveUsers',reslut.data);
+
+            this.$router.replace('/profile');
+
+          }else{
+
+            MessageBox('提示',reslut.msg || '登录失败')
+
+            this.updateCaptcha()
+
+            this.captcha= ''
+          }
+           
          
-         this.$store.dispatch('gotoLogin',{pwd,name,captcha});
           
         }else{
 
+          MessageBox('提示','数据不合法请重新输入');
+       
       
-         /* eslint-disable */
-      
-       }
+         }
 
          
       },
      async  getCode(){
       
       this.count=10  
-
-      let count = 10
                
       let timer = setInterval(() => {
-             count--
+          
             
-          this.count=count  
+          this.count--  
 
-          if(count==0){
+          if(this.count<=0){
 
             clearInterval(timer)
 
@@ -132,19 +168,18 @@ import {reqSendCode} from "@/api/index";
 
         }, 1000);
 
-       let result  =  await reqSendCode(this.phone)
+       let result  =  await this.API.reqSendCode(this.phone)
 
         if(result.code === 0){
+         
+          Toast('发送成功');
 
-            
-           this.$store.dispatch('gotoLogin',result.data);
-           
-             
-
+          
         }else{
-
-
-
+          
+          MessageBox('提示',result.msg||'短信发送失败')
+           this.count = 0
+           clearInterval(timer)
 
         }
       

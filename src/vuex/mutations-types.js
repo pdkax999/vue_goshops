@@ -6,3 +6,6 @@ export const RECEIVE_USER = 'receive_user'
 
 export const RECEIVE_TOKEN = 'receive_token'
 
+export const REMOVE_USER_INFO = 'remove_user_info'
+
+

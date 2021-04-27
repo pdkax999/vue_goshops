@@ -90,30 +90,26 @@
 <script type="text/ecmascript-6">
 import Swiper from "swiper/js/swiper";
 import  "swiper/css/swiper.css";
-
 import {mapState} from "vuex";
 
   export default {
    mounted(){
-
     this.$store.dispatch('getCategory')
-
-
-           
+     this.$store.dispatch('getShops');     
   },
     computed:{
-     ...mapState(['address','shops','categorys']),
-     
+     ...mapState(['address','shops','categorys']),     
      categorysArr(){
       
       const {categorys} = this
 
       let OuterArr = []; 
+
       let smallArr = [];
 
       let len = categorys.length;
       
-      let  size =8;
+      let size =8;
 
       let num = len%8 === 0 ? len / 8 : Math.ceil(len/8)
      
@@ -123,15 +119,11 @@ import {mapState} from "vuex";
 
           OuterArr.push(smallArr)
          
-      }
-      
-      console.log(OuterArr);
-      
+      }      
        return OuterArr
      }
     },
 
-    
     watch:{
     categorysArr(){
 
