@@ -7,7 +7,7 @@ import router from "../router/index.js";
 
 import store from "../vuex/store";
 
-import {Toast} from 'mint-ui';
+import {Toast,Indicator} from 'mint-ui';
 
 const myAxios = axios.create({
   baseURL: '/api',
@@ -15,8 +15,9 @@ const myAxios = axios.create({
 });
 
 
-
 myAxios.interceptors.request.use(function (config) {
+
+  Indicator.open()
 
   if(config.data instanceof Object){
     
@@ -46,11 +47,12 @@ myAxios.interceptors.request.use(function (config) {
 
 
 myAxios.interceptors.response.use(function (response) {
- 
+  Indicator.close()
  
   return response.data;
 
 }, function (error) {
+  Indicator.close()
      
    let {response} = error
   
@@ -61,6 +63,7 @@ myAxios.interceptors.response.use(function (response) {
     if(path !== '/login'){
 
       router.replace('/login')
+
       Toast(error.message)
     }
 
@@ -82,12 +85,10 @@ myAxios.interceptors.response.use(function (response) {
 
      Toast('请求资源不存在')
 
-
   }else{
 
     Toast('请求出错'+error.message);
     
-
   }
   return  new Promise(()=>{});
 });

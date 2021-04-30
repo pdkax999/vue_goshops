@@ -13,9 +13,9 @@
         <nav class="msite_nav">
 
          <div class="swiper-container" ref="swiper_container">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper" v-if="categorysArr.length>0">
 
-              <div class="swiper-slide" v-for="(cs,index) in categorysArr" :key="index">
+              <div class="swiper-slide" v-for="(cs,index) in categorysArr" :key="index" >
 
                 <div class="link_to_food" v-for="(c,index) in cs" :key='index'>
                   <div class="food_container">
@@ -24,9 +24,9 @@
                   <span>{{c.title}}</span>
                 </div>
 
-              </div>
-
+              </div>            
             </div>
+             <img src="./images/msite_back.svg" alt="" v-else>
             <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
           </div>
@@ -40,8 +40,9 @@
             <span class="shop_header_title">附近商家</span>
           </div>
           <div class="shop_container">
-            <ul class="shop_list">
-              <li class="shop_li border-1px" v-for="(shop,index) in shops" :key='index'
+            <ul class="shop_list" v-if="shops.length>0">
+              <li class="shop_li border-1px" v-for="(shop,index) in shops" :key='index'  @click="$router.push('/shop')"
+               
               >                                   
                 <a>
                   <div class="shop_left">
@@ -58,7 +59,7 @@
                     </section>
                     <section class="shop_rating_order">
                       <section class="shop_rating_order_left">
-                       <!--    <Star :score="shop.rating" :size="'24'"/> -->
+                          <Star :size="'star-24'" :score='shop.rating'/>
                         <div class="rating_section">
                           {{shop.rating}}
                         </div>
@@ -80,6 +81,20 @@
                   </div>
                 </a>
               </li>    
+            </ul>
+            <ul v-else>
+              <li>
+                <img src="./images/shop_back.svg" alt="">
+              </li>
+              <li>
+                <img src="./images/shop_back.svg" alt="">
+              </li>
+              <li>
+                <img src="./images/shop_back.svg" alt="">
+              </li>
+              <li>
+                <img src="./images/shop_back.svg" alt="">
+              </li>
             </ul>
           </div>
         </div>

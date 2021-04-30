@@ -32,7 +32,11 @@ export const reqSendCode = (phone)=> myAxios.get('/sendcode',{
     phone
   }
 });
-export const reqAutoLogin = ()=> myAxios.get('/auto_login',{
-  
+export const reqAutoLogin = ()=> myAxios.get('/auto_login');
 
-});
+export const reqShopGoods = ()=> myAxios.get('/goods'); 
+
+export const reqShopRatings = ()=> myAxios.get('/ratings');
+
+export const reqShopInfo = ()=> myAxios.get('/info');
+

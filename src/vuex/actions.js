@@ -1,7 +1,14 @@
 
-import {reqCategory,reqAddress,reqShops,reqAutoLogin} from "@/api/index.js";
+import {reqCategory,reqAddress,reqShops,reqAutoLogin,reqShopGoods,reqShopRatings,reqShopInfo} from "@/api/index.js";
 
-import {RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_ADDRESS,RECEIVE_TOKEN,RECEIVE_USER,REMOVE_USER_INFO} from "./mutations-types";
+import {RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_ADDRESS,RECEIVE_TOKEN,RECEIVE_USER,REMOVE_USER_INFO,
+  RECEIVE_GOODS,
+  RECEIVE_INFO,
+  RECEIVE_RATINGS,
+  FOOD_COUNT_REDUCE,
+  FOOD_COUNT_ADD,
+  CLEAR_CART_FOODS
+} from "./mutations-types";
 
        
 
@@ -19,7 +26,6 @@ export default {
 
 },
  async getAddress({commit,state}){
-   console.log('1');
    
   const  {latitude,longitude} = state 
   
@@ -116,6 +122,57 @@ removeUser({commit}){
 
 
   commit(REMOVE_USER_INFO)
+
+},
+async getShopGoods({commit}){
+ 
+ let result = await reqShopGoods()
+  
+  if(result.code ===0){
+
+     
+    commit(RECEIVE_GOODS,result.data)
+
+  }
+
+},
+async getShopRatings({commit}){
+ 
+ let result = await reqShopRatings()
+  
+  if(result.code ===0){
+
+     
+    commit(RECEIVE_RATINGS,result.data)
+
+  }
+
+},
+async getShopInfo({commit}){
+ 
+ let result = await reqShopInfo()
+  
+  if(result.code ===0){
+
+     
+    commit(RECEIVE_INFO,result.data)
+
+  }
+
+},
+operationCount({commit},{food,type}){
+  if(type){
+
+    commit(FOOD_COUNT_ADD,food)
+
+  }else{
+
+    commit(FOOD_COUNT_REDUCE,food)
+  }
+},
+clearFoods({commit}){
+
+  commit(CLEAR_CART_FOODS)
 
 }
 }
