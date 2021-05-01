@@ -53,17 +53,11 @@ import BScroll from '@better-scroll/core'
         isShowCart:false
       }
     },
-    mounted(){
-
-   
-        
-
-
-
-    },
     computed:{
-
-      ...mapState(['CartFood']),
+      ...mapState({
+        'CartFood':state=>state.shop.CartFood
+      }),
+      // 
       ...mapGetters(['totalFood','totalPrice']),
        conditionText(){
 

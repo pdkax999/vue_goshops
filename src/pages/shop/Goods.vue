@@ -77,7 +77,9 @@ import Food from "@components/Food/Food";
    }, */
    computed:{
 
-     ...mapState(['goods']),
+     ...mapState({
+       'goods':state=>state.shop.goods,
+     }),
      currentIndex(){
        const {scrollY,tops} = this
 

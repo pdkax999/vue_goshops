@@ -110,14 +110,20 @@ import {mapState} from "vuex";
   export default {
    mounted(){
     this.$store.dispatch('getCategory')
-     this.$store.dispatch('getShops');     
+    this.$store.dispatch('getShops');     
+
+      
   },
     computed:{
-     ...mapState(['address','shops','categorys']),     
+     ...mapState({
+       'address':state=>state.miste.address,
+       'shops':state=>state.miste.shops,
+       'categorys':state=>state.miste.categorys,
+     }),     
      categorysArr(){
       
       const {categorys} = this
-
+      
       let OuterArr = []; 
 
       let smallArr = [];

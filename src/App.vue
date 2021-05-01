@@ -9,9 +9,11 @@
 import FooterGuide from "@components/FooterGuide";
 
   export default {
+
     components:{
       FooterGuide
     },
+    
     mounted(){
       
       this.$store.dispatch('reqAutoLogin');

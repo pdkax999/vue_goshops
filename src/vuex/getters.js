@@ -29,12 +29,6 @@ export default{
     return  cartFoodList  
 
   }, */
-  totalFood(state){
-    return  state.CartFood.reduce((pre,food)=>food.count+pre,0)
-  },
-  totalPrice(state){
-
-    return  state.CartFood.reduce((pre,food)=>food.count*food.price+pre,0)
-  }
+ 
 
 }

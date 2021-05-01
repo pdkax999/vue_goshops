@@ -25,7 +25,7 @@ myAxios.interceptors.request.use(function (config) {
 
   }
 
-  let token = store.state.token
+  let token = store.state.user.token
    
    if(token){
 
