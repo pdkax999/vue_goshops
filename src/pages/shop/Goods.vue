@@ -70,15 +70,10 @@ import Food from "@components/Food/Food";
      }
      
    },
-  /*  beforeUpdate(){
-
-     console.log(this.goods.length);
-     
-   }, */
    computed:{
 
      ...mapState({
-       'goods':state=>state.shop.goods,
+       'goods':state=>state.shop.shop.goods||[],
      }),
      currentIndex(){
        const {scrollY,tops} = this
@@ -169,12 +164,16 @@ import Food from "@components/Food/Food";
     },
     
     watch:{
-    goods(){
+    'goods'(){
 
       this.$nextTick(()=>{
           
           this._initTops()
           this._initScroll()
+
+          console.log('调用了');
+          
+          
       })
 
     }

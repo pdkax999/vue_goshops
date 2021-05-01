@@ -6,6 +6,7 @@ import {RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_ADDRESS
 } from "../mutations-types";
 
 const actions={
+  
   async getCategory({commit}){
     
     

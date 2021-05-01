@@ -43,9 +43,3 @@ export const reqShopInfo = ()=> myAxios.get('/info');
 export const reqShopDetail = (id)=> myAxios('/shop/'+id)
 
 
-reqShopDetail(1).then(va=>{
- 
-  console.log(va);
-  
-
-})

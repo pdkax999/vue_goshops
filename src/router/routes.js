@@ -48,8 +48,9 @@ import Ratings from "@/pages/Shop/Ratings";
     }
    },
    {
-     path: '/shop',
+     path: '/shop/:id',
      component: Shop,
+     props:route => ({ id: route.params.id }),
      children:[
        {
          path: 'goods',

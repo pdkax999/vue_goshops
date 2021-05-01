@@ -20,4 +20,8 @@ export const FOOD_COUNT_REDUCE = 'food_count_reduce'
 
 export const CLEAR_CART_FOODS = 'clear_cart_foods'
 
+export const RECEIVE_SHOP_DETAIL = 'receive_shop_detail'
+
+export const CLEAR_SHOP_DETAIL = 'clear_shop_detail'
+
 
