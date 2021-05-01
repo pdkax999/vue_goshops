@@ -11,10 +11,10 @@
     </div>
     <div class="foods-wrapper" ref="scrollRight">
       <ul ref="foodList">
-        <li class="food-list-hook" v-for="(go,index) in goods" :key="index">
+        <li class="food-list-hook" v-for="(go,index) in goods" :key="index" >
           <h1 class="title">{{go.name}}</h1>
           <ul>
-            <li class="food-item bottom-border-1px" v-for="(food,i) in go.foods" :key="i">
+            <li class="food-item bottom-border-1px" v-for="(food,i) in go.foods" :key="i" @click='showFoodBig(food)'>
               <div class="icon">
                 <img width="57" height="57"
                      :src="food.image">
@@ -29,7 +29,7 @@
                   <span class="now">￥{{food.price}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <CartControl :food='food'/>
+                   <CartControl :food='food'/>
                 </div>
               </div>
             </li>
@@ -39,8 +39,8 @@
     </div>
   </div>
   <ShopCart/>
+  <Food :food='food' ref='currentFood'/>
 </div>
-
 </template>
 
 <script type="text/ecmascript-6">
@@ -48,17 +48,35 @@ import {mapState} from "vuex";
 import BScroll from '@better-scroll/core'
 import CartControl from "@components/CartControl/CartControl";
 import ShopCart from "@components/ShopCart/ShopCart";
- 
+import Food from "@components/Food/Food";
+
  export default{
    data(){
 
      return {
        scrollY:0,
-       tops:[]
+       tops:[],
+       food:{}
      }
 
    },
+   mounted(){
+     
+     if(this.goods.length>0){
+
+        this._initScroll()
+        this._initTops()
+
+     }
+     
+   },
+  /*  beforeUpdate(){
+
+     console.log(this.goods.length);
+     
+   }, */
    computed:{
+
      ...mapState(['goods']),
      currentIndex(){
        const {scrollY,tops} = this
@@ -94,15 +112,16 @@ import ShopCart from "@components/ShopCart/ShopCart";
         top+=li.offsetHeight
 
         tops.push(top)
-
       });
       
       this.tops = tops 
 
      },
      _initScroll(){
-
-      this.scrollRight =new BScroll(this.$refs.scrollRight,{
+         
+       
+     if(!this.scrollRight){
+       this.scrollRight =new BScroll(this.$refs.scrollRight,{
         probeType:1,
         click:true
       })
@@ -123,16 +142,28 @@ import ShopCart from "@components/ShopCart/ShopCart";
 
         this.scrollY=scrollY
      })
+     }else{
 
+       this.scrollLeft.refresh()
+       this.scrollRight.refresh()
+
+     }
      },
      clickItem(i){
-        
+      
       let y = this.tops[i]
 
       this.scrollY = y 
 
       this.scrollRight.scrollTo(0,-y,300)  
     },
+    showFoodBig(food){
+
+      this.food = food
+
+      this.$refs.currentFood.toggleShow()
+    }
+    
     },
     
     watch:{
@@ -145,14 +176,12 @@ import ShopCart from "@components/ShopCart/ShopCart";
       })
 
     }
-
-
     },
     components:{
       CartControl,
-      ShopCart
+      ShopCart,
+      Food
     }
-
  }
 
 </script>

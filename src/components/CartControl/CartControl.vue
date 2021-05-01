@@ -1,22 +1,25 @@
 <template>
 <div class="cartcontrol">
    <transition name="move">
-     <div class="iconfont icon-remove_circle_outline" v-if="food.count>0" @click="operaType(false)"></div>
+     <div class="iconfont icon-remove_circle_outline" v-if="food.count>0" @click.stop="operaType(false)"></div>
    </transition>
   <div class="cart-count" v-if="food.count>0">{{food.count}}</div>
-  <div class="iconfont icon-add_circle" @click="operaType(true)"></div>
+  <div class="iconfont icon-add_circle" @click.stop="operaType(true)"></div>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
+import throttle from "lodash/throttle";
   export default {
     props:['food'],
     methods:{
-    operaType(type){
-       
+    operaType:throttle(function name(type){
+      
       this.$store.dispatch('operationCount',{type,food:this.food})
 
-    }   
+    },1000,{
+      trailing:false
+    })   
     }
   }
 </script>

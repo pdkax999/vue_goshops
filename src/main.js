@@ -1,6 +1,8 @@
 import Vue from 'vue'
-
+import VueLazyload from "vue-lazyload";
 import  "lib-flexible";
+
+import loading from "@/common/img/loading.gif";
 
 import "./validate";
 import  * as API from "@/api";
@@ -19,6 +21,10 @@ Vue.config.productionTip = false
 Vue.component('Header',Header)
 
 Vue.prototype.API = API 
+
+Vue.use(VueLazyload,{
+  loading
+})
 
 
 new Vue({

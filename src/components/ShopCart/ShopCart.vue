@@ -23,7 +23,7 @@
         <h1 class="title">购物车</h1>
         <span class="empty" @click='isClearFoods'>清空</span>
       </div>
-      <div class="list-content">
+      <div class="list-content" ref='listCartShop'>
         <ul>
           <li class="food" v-for="(food) in CartFood" :key="food.name">
             <span class="name">{{food.name}}</span>
@@ -45,6 +45,7 @@
 import { mapState, mapGetters } from 'vuex';
 import CartControl from "@components/CartControl/CartControl";
 import {MessageBox} from 'mint-ui';
+import BScroll from '@better-scroll/core'
   export default {
     data(){
 
@@ -52,7 +53,14 @@ import {MessageBox} from 'mint-ui';
         isShowCart:false
       }
     },
+    mounted(){
+
    
+        
+
+
+
+    },
     computed:{
 
       ...mapState(['CartFood']),
@@ -84,7 +92,7 @@ import {MessageBox} from 'mint-ui';
 
          return  this.isShowCart
        },
-       
+             
 
     },
     methods:{
@@ -96,8 +104,17 @@ import {MessageBox} from 'mint-ui';
           this.isShowCart = !this.isShowCart
 
         }
+
+        if(this.isShowCart){
+
+            this.$nextTick(()=>{
+
+              this._initScrollCart()
+            })
+
+        }
+
            
-       
       },
       isClearFoods(){
 
@@ -109,12 +126,29 @@ import {MessageBox} from 'mint-ui';
 
         });
 
+      },
+      _initScrollCart(){
+      
+      const {listCartShop} = this.$refs
+
+       if(!this.bs){
+
+        this.bs = new BScroll(listCartShop)
+        console.log('1');
+        
+       }else{
+
+         this.bs.refresh()
+
+       }
+
       }
-
-
     },
     components:{
       CartControl
+    },
+    watch:{
+   
     }
   }
 </script>
