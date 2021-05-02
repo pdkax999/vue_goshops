@@ -171,9 +171,7 @@ import Food from "@components/Food/Food";
           this._initTops()
           this._initScroll()
 
-          console.log('调用了');
-          
-          
+          /* console.log('调用了'); */
       })
 
     }

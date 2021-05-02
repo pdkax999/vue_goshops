@@ -77,10 +77,11 @@ import { Toast, MessageBox} from 'mint-ui';
       }
     },
     computed:{
+      
       isPhone(){   //是否禁用验证button
 
-
         return  /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.phone);
+
       }
 
     },

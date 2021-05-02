@@ -1,5 +1,7 @@
 import {reqShopDetail} from "@/api/index.js";
 
+import {getShopCart} from '@/utils/storageCart'
+
 import {
   FOOD_COUNT_REDUCE,
   FOOD_COUNT_ADD,
@@ -15,32 +17,34 @@ export default{
   actions:{
 
     async getShopdetail({commit,state},id){
-  
-      if(state.shop&&state.shop.id==id){
-  
+        
+      if(state.shop.id===id){
+        
         return 
       }
-  
-        //有id清楚或者刷新时不清楚
-  
-        //commit(CLEAR_SHOP_DETAIL)  有问题  scroll报错
-      if(state.shop.id){  
-        
-          commit(RECEIVE_SHOP_DETAIL,{})
-        console.log('调用了');
-        
-      }
-
-
-  
+      console.log('请求');
       
+        //有id清楚或者刷新时不清楚  
+        //commit(CLEAR_SHOP_DETAIL)  有问题  scroll报错
+     /*  if(state.shop.id){  
+        
+           commit(RECEIVE_SHOP_DETAIL,{})
+          console.log('调用了');
+        
+      } */
       let result = await reqShopDetail(id)
        
        if(result.code ===0){
-     
-         commit(RECEIVE_SHOP_DETAIL,{shop:result.data})
+          
+        let CartFood = getShopCart(id,result.data.goods)
+           
+        console.log('读取了数据',CartFood);
+        
+
+         commit(RECEIVE_SHOP_DETAIL,{shop:result.data,CartFood})
      
        }
+
   
     },
      operationCount({commit},{food,type}){
@@ -119,7 +123,5 @@ export default{
   state:{
     shop:{},
     CartFood:[]
-  
-  
   },
 }

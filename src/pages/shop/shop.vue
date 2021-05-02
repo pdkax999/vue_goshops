@@ -17,20 +17,38 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import ShopHeader from '@/components/ShopHeader/ShopHeader'
+import ShopHeader from '@/components/ShopHeader/ShopHeader'
+import {setShopCart} from '@/utils/storageCart'
+import {mapState} from 'vuex';
+
   export default {
     components:{
       ShopHeader
     },
     mounted(){
-
-      /* this.$store.dispatch('getShopGoods')
-      this.$store.dispatch('getShopInfo')
-      this.$store.dispatch('getShopRatings') */
-
+     
       this.$store.dispatch('getShopdetail',this.id);
 
+      window.addEventListener('unload',()=> {
+        
+        const {id,CartFood} =this 
 
+        setShopCart(id,CartFood)
+       
+      })
+    },
+    computed:{
+      ...mapState({
+        CartFood: state=>state.shop.CartFood
+      }
+      )
+    },
+    beforeDestroy(){
+      
+      const {id,CartFood} =this 
+
+      setShopCart(id,CartFood)
+    
     },
     props:['id']
   }
